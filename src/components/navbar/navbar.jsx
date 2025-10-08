@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { useState } from "react";
+import "./navbar.css"
 export default function Navbar(){
 
     return(

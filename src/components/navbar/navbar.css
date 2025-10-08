@@ -1,0 +1,57 @@
+/* Navbar container */
+ul {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 25px;
+  margin: 0;
+  padding: 15px 0;
+  background-color: #0d1117;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 100;
+}
+
+/* Navbar items */
+ul li {
+  font-size: 18px;
+}
+
+/* Navbar links */
+ul li a {
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+/* Hover effect */
+ul li a:hover {
+  color: #58a6ff;
+}
+
+/* Add some top space so content isn’t hidden under navbar */
+body {
+  margin: 0;
+  padding-top: 70px;
+  background-color: #f5f5f5;
+  font-family: Arial, sans-serif;
+}
+
+/* Optional: button inside navbar */
+ul li button {
+  background: #58a6ff;
+  border: none;
+  color: white;
+  padding: 6px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+ul li button:hover {
+  background: #1f6feb;
+}
