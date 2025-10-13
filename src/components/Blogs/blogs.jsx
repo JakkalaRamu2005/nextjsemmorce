@@ -5,7 +5,8 @@ import "./index.css"
 
 
 
-export default function Blogs({ blogs }) {
+export default function Blogs({blogs}) {
+  
   return (
     <div>
 

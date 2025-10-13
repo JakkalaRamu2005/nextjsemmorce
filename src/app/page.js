@@ -1,7 +1,7 @@
 
 // "use client"
 
-import Fetch from "@/components/Fetch";
+import Fetch from "@/components/Posts";
 
 // import Button from "@/components/button";
 

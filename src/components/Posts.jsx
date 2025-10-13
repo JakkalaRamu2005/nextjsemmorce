@@ -12,7 +12,7 @@ const styles = {
 }
 const Fetch = () => {
     const [data, setData] = useState(null);
-    const apiUrl = "https://fakestoreapi.com/products";
+    const apiUrl = "https://jsonplaceholder.typicode.com/posts";
     
     useEffect(()=>{
         const getData = async()=>{
