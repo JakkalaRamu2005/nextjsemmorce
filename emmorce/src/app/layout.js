@@ -20,7 +20,7 @@ export default function RootLayout({ children }) {
       <body>
         <p>Next js app</p>
         <div className={teluguFont.className}>
-          
+          asdfasdfadsf
           <Navbar/>
         </div>
         {children}
