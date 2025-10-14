@@ -1,0 +1,28 @@
+.project-card{
+    display: flex;
+    flex-direction: row;
+    height: 20vh;
+    margin-bottom: 20px;
+    width: 40%;
+    padding: 20px;
+    border-radius: 30px;
+    background-color: aqua;
+}
+.project-cards{
+    height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    list-style-type: none;
+    margin-top: 300px;
+}
+.project-heading{
+    font-size: 20px;
+}
+.project-description{
+    font-weight: bold;
+}
+.image-container{
+    width: 30%;
+}
