@@ -13,10 +13,10 @@ if (!MONGODB_URI) {
 const connectToDB = async () => {
   try {
     // If already connected, skip re-connection
-    if (mongoose.connection.readyState === 1) {
-      console.log("✅ MongoDB already connected");
-      return;
-    }
+    // if (mongoose.connection.readyState === 1) {
+    //   console.log("✅ MongoDB already connected");
+    //   return;
+    // }
 
     await mongoose.connect(MONGODB_URI);
 

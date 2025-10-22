@@ -1,11 +1,13 @@
 import Credentials from "next-auth/providers/credentials";
 import connectDB from "@/utils/db";
 import NextAuth from "next-auth";
-
+import bcrypt from "bcryptjs";
+import dotenv from "dotenv";
 import User from "@/models/usermodel";
 
+dotenv.config();
 
-const authOptions = {
+export const authOptions = {
     providers: [
         Credentials({
             name: "Credentials",
@@ -19,11 +21,18 @@ const authOptions = {
                 }
                 await connectDB();
                 const user = await User.findOne({email: credentials.email});
-                if(!user || user.password !== credentials.password){
+
+                if(!user){
                     throw new Error("Invalid Credentials");
                 }
 
-                return {id: user._id, email: user.email, name: user.name};
+                const isPasswordMatch = await bcrypt.compare(credentials.password, user.password);
+
+                if(!isPasswordMatch){
+                    throw new Error("Invalid Credentials");
+                }
+
+                return {id: user._id, email: user.email};
             }
         })
     ],
@@ -38,7 +47,7 @@ const authOptions = {
     callbacks:{
         async jwt({token, user}){
             if(user){
-                token.id = user.id;
+                token.email = user.email;
             }
             return token;
         },
@@ -46,7 +55,7 @@ const authOptions = {
 
         async session({session, token}){
             if(token){
-                session.user.id = token.id;
+                session.user.email = token.email;
             }
             return session;
         }
