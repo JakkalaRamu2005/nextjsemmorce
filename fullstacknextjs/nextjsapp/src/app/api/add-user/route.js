@@ -1,5 +1,5 @@
 import { connectDB } from "@/app/lib/mongodb";
-import {User} from "@/app/models/User";
+import User from "@/app/models/User";
 
 
 

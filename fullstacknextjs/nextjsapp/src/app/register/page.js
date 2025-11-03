@@ -1,15 +1,13 @@
-import Image from "next/image";
+import Register from "@/components/Register/Register";
 
 import React from 'react'
-import Home from "@/components/Home/Home";
 
 const page = () => {
   return (
     <div>
-      <Home/>
+      <Register/>
     </div>
   )
 }
 
 export default page
-
