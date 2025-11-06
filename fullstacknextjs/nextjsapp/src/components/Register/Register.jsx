@@ -1,7 +1,8 @@
- "use client";
+"use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import "../Register/register.css";
+import { useAuth } from "@/context/AuthContext";
 
 export default function Register() {
     const router = useRouter();
@@ -10,7 +11,16 @@ export default function Register() {
         email: "",
         password: ""
     });
-    const [error, setError] = useState("");
+
+    const {login} = useAuth();
+   
+
+   const [message, setMessage] = useState({
+        type: "",
+        text: ""
+    });
+
+
     const [loading, setLoading] = useState(false);
 
     const handleChange = (e) => {
@@ -22,7 +32,7 @@ export default function Register() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setError("");
+        setMessage({ type: '', text: '' });
         setLoading(true);
 
         try {
@@ -37,14 +47,19 @@ export default function Register() {
             const data = await response.json();
 
             if (response.ok) {
-                // Save user data to localStorage
-                localStorage.setItem("user", JSON.stringify(data.user));
-                router.push("/");
+                // Auto login after successful registration
+                const loginResult = await login(formData.email, formData.password);
+                if (loginResult.success) {
+                    setMessage({ type: 'success', text: 'Registration successful!' });
+                    router.push("/");
+                } else {
+                    setMessage({ type: 'error', text: 'Registration successful but login failed' });
+                }
             } else {
-                setError(data.message || "Registration failed");
+                setMessage({ type: 'error', text: data.message || "Registration failed" });
             }
         } catch (err) {
-            setError("Something went wrong. Please try again.");
+            setMessage({ type: 'error', text: "Something went wrong. Please try again." });
         } finally {
             setLoading(false);
         }
@@ -55,7 +70,13 @@ export default function Register() {
             <div className="register-box">
                 <h1 className="register-title">Create Account</h1>
 
-                {error && <div className="error-message">{error}</div>}
+
+                {message.text && (
+                    <div className={`message ${message.type}`}>
+                        {message.text}
+                    </div>
+                )}
+
 
                 <form onSubmit={handleSubmit} className="register-form">
                     <div className="form-group">

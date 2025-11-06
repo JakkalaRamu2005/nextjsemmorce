@@ -1,6 +1,9 @@
 import { connectDB } from "@/app/lib/mongodb";
 import { User } from "@/app/models/User";
 import bcrypt from "bcryptjs";
+import { signToken } from "@/app/lib/jwt";
+import { cookies } from "next/headers";
+import { sign } from "jsonwebtoken";
 
 export async function POST(req) {
     try {
@@ -29,6 +32,14 @@ export async function POST(req) {
 
         // Don't send password back
         const { password: pwd, ...userWithoutPassword } = user.toObject();
+        const token = signToken({userId: user._id});
+
+        cookies().set('token', token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'strict', 
+            maxAge: 86400
+        })
 
         return Response.json(
             { message: "Login successful", user: userWithoutPassword },

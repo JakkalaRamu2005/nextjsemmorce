@@ -1,3 +1,25 @@
+/* ...existing styles... */
+
+.message {
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.message.error {
+    background-color: #fee2e2;
+    color: #dc2626;
+    border: 1px solid #f87171;
+}
+
+.message.success {
+    background-color: #dcfce7;
+    color: #16a34a;
+    border: 1px solid #4ade80;
+}
+
+
 .register-container {
     min-height: 100vh;
     display: flex;

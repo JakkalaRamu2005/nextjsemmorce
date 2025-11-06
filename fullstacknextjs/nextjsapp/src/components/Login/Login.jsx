@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/AuthContext";
 import "../Login/login.css";
 
 export default function Login() {
@@ -9,8 +10,12 @@ export default function Login() {
         email: "",
         password: ""
     });
-    const [error, setError] = useState("");
+    const { login } = useAuth();
     const [loading, setLoading] = useState(false);
+    const [message, setMessage] = useState({
+        type: "",
+        text: ""
+    });
 
     const handleChange = (e) => {
         setFormData({
@@ -21,32 +26,19 @@ export default function Login() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setError("");
+        setMessage({ type: '', text: '' });
         setLoading(true);
 
-        try {
-            const response = await fetch("/api/login", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(formData)
-            });
-
-            const data = await response.json();
-
-            if (response.ok) {
-                // Save user data to localStorage
-                localStorage.setItem("user", JSON.stringify(data.user));
-                router.push("/home");
-            } else {
-                setError(data.message || "Login failed");
-            }
-        } catch (err) {
-            setError("Something went wrong. Please try again.");
-        } finally {
-            setLoading(false);
+        const result = await login(formData.email, formData.password);
+        if (result.success) {
+            setMessage({ type: 'success', text: 'Login successful' });
+            router.push("/");
+        } else {
+            setMessage({ type: 'error', text: result.error });
         }
+
+        setLoading(false);
+
     };
 
     return (
@@ -54,7 +46,11 @@ export default function Login() {
             <div className="login-box">
                 <h1 className="login-title">Welcome Back</h1>
 
-                {error && <div className="error-message">{error}</div>}
+                {message.text && (
+                    <div className={`message ${message.type}`}>
+                        {message.text}
+                    </div>
+                )}
 
                 <form onSubmit={handleSubmit} className="login-form">
                     <div className="form-group">
