@@ -6,22 +6,27 @@ import "../Home/home.css";
 
 export default function Home() {
     const router = useRouter();
-    const { user, logout } = useAuth();
+    const { user, logout, loading } = useAuth();
 
     useEffect(() => {
-        // If no user in context, redirect to login
-        if (!user) {
+        if (!loading && !user) {
             router.push("/login");
         }
-    }, [user, router]);
+    }, [user, loading, router]);
 
     const handleLogout = async () => {
         await logout();
         router.push("/login");
     };
 
-    if (!user) {
+    // Show loading state while checking authentication
+    if (loading) {
         return <div className="loading">Loading...</div>;
+    }
+
+    // If not loading and no user, don't render anything (will redirect)
+    if (!user) {
+        return null;
     }
 
     return (
@@ -38,7 +43,6 @@ export default function Home() {
                 </div>
             </nav>
             <main className="main-content">
-                {/* Add your dashboard content here */}
                 <h1>Welcome to Your Dashboard</h1>
             </main>
         </div>

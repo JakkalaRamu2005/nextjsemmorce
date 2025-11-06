@@ -1,12 +1,34 @@
 'use client'
 
-import { createContext, useContext, useState } from "react"
+import { createContext, useContext, useEffect, useState } from "react"
 
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
 
     const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(()=>{
+        checkAuthStatus();
+    },[]);
+
+    const checkAuthStatus = async ()=>{
+        try{
+            const res = await fetch('/api/check-auth',{
+                method:"GET",
+            })
+            const data = await res.json();
+
+            if(res.ok){
+                setUser(data.user);
+            }
+        }catch(error){
+            console.error('Auth check failed', error);
+        }finally{
+            setLoading(false);
+        }
+    }
 
     const login = async (email, password) => {
 

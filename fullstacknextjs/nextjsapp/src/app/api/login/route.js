@@ -12,7 +12,7 @@ export async function POST(req) {
 
         // Find user by email
         const user = await User.findOne({ email });
-        
+
         if (!user) {
             return Response.json(
                 { message: "Invalid email or password" },
@@ -22,7 +22,7 @@ export async function POST(req) {
 
         // Compare passwords
         const isPasswordValid = await bcrypt.compare(password, user.password);
-        
+
         if (!isPasswordValid) {
             return Response.json(
                 { message: "Invalid email or password" },
@@ -32,14 +32,19 @@ export async function POST(req) {
 
         // Don't send password back
         const { password: pwd, ...userWithoutPassword } = user.toObject();
-        const token = signToken({userId: user._id});
+        const token = signToken({ userId: user._id });
 
-        cookies().set('token', token, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: 'strict', 
+
+        const cookieStore = await cookies();
+        cookieStore.set('token', token, {
+            httpOnly: false,
+           
+            sameSite: 'strict',
             maxAge: 86400
+
         })
+
+
 
         return Response.json(
             { message: "Login successful", user: userWithoutPassword },
