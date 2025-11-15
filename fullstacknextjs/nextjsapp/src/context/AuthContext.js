@@ -17,6 +17,7 @@ export function AuthProvider({ children }) {
         try{
             const res = await fetch('/api/check-auth',{
                 method:"GET",
+                credentials:"include"
             })
             const data = await res.json();
 

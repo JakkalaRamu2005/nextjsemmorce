@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import "../Home/home.css";
+import Link from "next/link"; 
 
 export default function Home() {
     const router = useRouter();
@@ -19,12 +20,10 @@ export default function Home() {
         router.push("/login");
     };
 
-    // Show loading state while checking authentication
+    // ... (keep the loading and !user returns) ...
     if (loading) {
         return <div className="loading">Loading...</div>;
     }
-
-    // If not loading and no user, don't render anything (will redirect)
     if (!user) {
         return null;
     }
@@ -33,9 +32,17 @@ export default function Home() {
         <div className="home-container">
             <nav className="navbar">
                 <div className="nav-content">
-                    <h2 className="logo">MyApp</h2>
+                    <h2 className="logo">
+                        <Link href="/">MyApp</Link> {/* <-- 2. MAKE LOGO A LINK */}
+                    </h2>
                     <div className="user-info">
                         <span>Welcome, {user.name}</span>
+                        
+                        {/* 3. ADD THIS PROFILE LINK */}
+                        <Link href="/profile" className="profile-link">
+                            Profile
+                        </Link>
+                        
                         <button onClick={handleLogout} className="logout-btn">
                             Logout
                         </button>
@@ -44,6 +51,7 @@ export default function Home() {
             </nav>
             <main className="main-content">
                 <h1>Welcome to Your Dashboard</h1>
+                {/* We will add resource content here later */}
             </main>
         </div>
     );
